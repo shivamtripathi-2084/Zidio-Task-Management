@@ -1,6 +1,5 @@
 # Zidio Task Management
 
-Live app: https://zidio-task-management.netlify.app/
 
 ## Roles and task workflow
 
