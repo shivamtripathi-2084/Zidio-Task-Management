@@ -1,4 +1,4 @@
-const httpStatus = require("http-status")
+const httpStatus = require("http-status").default || require("http-status")
 const { ApiError } = require("../utils/ApiError")
 const JWTService = require("../utils/jwt")
 

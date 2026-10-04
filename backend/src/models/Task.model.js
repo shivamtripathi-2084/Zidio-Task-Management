@@ -7,6 +7,15 @@ const Schema = new mongoose.Schema({
         trim:true,
         required:true
     },
+    assignee:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'user',
+        default:null
+    },
+    assignees:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'user'
+    }],
     title:{
         type:String,
         required:true,
@@ -17,10 +26,71 @@ const Schema = new mongoose.Schema({
         required:true,
         trim:true
     },
+    priority:{
+        type:String,
+        enum:['low','medium','high'],
+        default:'medium'
+    },
+    dueDate:{
+        type:Date,
+        default:null
+    },
+    status:{
+        type:String,
+        enum:['pending','in-progress','completed'],
+        default:undefined
+    },
     isComplete:{
         type:Boolean,
         default:false
-    }
+    },
+    comments:[{
+        user:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'user',
+            required:true
+        },
+        text:{
+            type:String,
+            required:true,
+            trim:true,
+            maxlength:1000
+        },
+        createdAt:{
+            type:Date,
+            default:Date.now
+        }
+    }],
+    attachments:[{
+        uploadedBy:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'user',
+            required:true
+        },
+        storageName:{
+            type:String,
+            required:true
+        },
+        originalName:{
+            type:String,
+            required:true,
+            maxlength:255
+        },
+        mimeType:{
+            type:String,
+            required:true
+        },
+        size:{
+            type:Number,
+            required:true,
+            min:1,
+            max:10 * 1024 * 1024
+        },
+        createdAt:{
+            type:Date,
+            default:Date.now
+        }
+    }]
 },{
     timestamps:true
 })

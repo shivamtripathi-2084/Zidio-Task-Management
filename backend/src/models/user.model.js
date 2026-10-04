@@ -7,21 +7,25 @@ const Schema = new mongoose.Schema({
     name:{
         type:String,
         required:true,
-        trim:true,
-        lower:true
+        trim:true
     },
 
     email:{
         type:String,
         required:true,
         trim:true,
-        lower:true,
+        lowercase:true,
         unique:true
     },
     password:{
         type:String,
         required:true,
         trim:true
+    },
+    role: {
+        type: String,
+        enum: ["admin", "editor", "viewer"],
+        default: "viewer"
     }
 },{timestamps:true})
 

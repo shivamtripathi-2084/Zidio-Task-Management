@@ -1,4 +1,4 @@
-const { body } = require("express-validator")
+const { body, param } = require("express-validator")
 class AuthValidation {
 
     static registerUser = [
@@ -11,6 +11,10 @@ class AuthValidation {
         body("password").notEmpty().withMessage("password is required")
     ]
 
+     static updateUserRole = [
+         param("id").isMongoId().withMessage("Please provide a valid user id"),
+         body("role").isIn(["admin", "editor", "viewer"]).withMessage("Role must be admin, editor, or viewer")
+     ]
 
     
 }

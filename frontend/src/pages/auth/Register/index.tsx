@@ -1,11 +1,13 @@
-import { ErrorMessage, Field, Form, Formik } from 'formik' 
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
+import { useState } from 'react'
 import { useAuth } from '../../../context/Auth.context'
 const Register = () => {
 
   const {registerUser} = useAuth()
+  const [showPassword, setShowPassword] = useState(false)
 
   type RegisterType = {
     name: string
@@ -24,15 +26,15 @@ const Register = () => {
     password: ''
   }
 
-  const onSubmitHandler = async (e: RegisterType, { resetForm }: any) => {
+  const onSubmitHandler = async (e: RegisterType, { resetForm }: FormikHelpers<RegisterType>) => {
       try {
        const data=  await registerUser(e.name, e.email, e.password)
 
         toast.success((data && data.msg) || "Register Successful")
 
-      } catch (error:any) {
+      } catch (error) {
 
-        toast.error(error.message)
+        toast.error(error instanceof Error ? error.message : "Unable to register")
       }
     resetForm();
 
@@ -58,9 +60,19 @@ const Register = () => {
             </div>
             <div className="mb-3">
               <label htmlFor="password">password <span className="text-danger">*</span> </label>
-              <Field name="password" id="password" type="password" className="form-control" placeholder="******" />
+              <Field name="password" id="password" type={showPassword ? "text" : "password"} className="form-control" placeholder="******" autoComplete="new-password" />
+              <button
+                type="button"
+                className="btn btn-outline-secondary mt-2"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-pressed={showPassword}
+                onClick={() => setShowPassword((current) => !current)}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
               <ErrorMessage name='password' component={'p'} className='text-sm text-danger' />
             </div>
+            <p className="text-muted">New accounts start as viewers. An administrator can assign another role.</p>
             <div className="mb-3">
               <button type='submit' className="btn btn-dark">Register</button>
             </div>

@@ -1,3 +1,3 @@
-exports.UserModel = require("./user.model")
+exports.UserModel = require("./User.model")
 
 exports.TaskModel = require("./Task.model")
